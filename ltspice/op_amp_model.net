@@ -1,0 +1,32 @@
+* OPAMPMOD
+
+.SUBCKT OPAMPMOD IN+ IN- V+ V- OUT
++ PARAMS: AV=1Meg RO=10 RIN=10Meg CIN=10p FP1=10 FP2=10Meg FP3=1000Meg
+
+* INPUT STAGE
+RIN1   IN+   0   { RIN }
+CIN1   IN+   0   { CIN }
+RIN2   IN-   0   { RIN }
+CIN2   IN-   0   { CIN }
+
+*  AMPLIFIER STAGE: GAIN, POLE, SLEW
+G1   0    10  IN+  IN-   { 1/1E3 }
+R1   10   0   1E3
+C1   10   0   { 1/(2*3.14159*FP1*1E3) }
+*
+* 2ND POLE 
+G2   0 20   10 0  { 1/1E3 }
+R2   20       0     1E3
+C2   20       0     { 1/(2*3.14159*FP2*1E3) }
+*
+* 3RD POLE 
+G3   0 30   20 0 { 1/1E3 }
+R3   30       0     1E3
+C3   30       0     { 1/(2*3.14159*FP3*1E3) }
+
+
+* OUTPUT STAGE
+EBUFFER 80 0  30  0    { AV }
+ROUT 80      OUT        { RO }
+
+.ENDS OPAMPMOD

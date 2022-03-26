@@ -1,0 +1,36 @@
+\begin{circuitikz}
+	\node [op amp] (opampa) at (0, -3) {} (0, 0);
+	\node [op amp, yscale=-1] (opampb) at (0, 3) {} (6, 6);
+
+	\node [ocirc, label=left:$V_{in,neg}$] (Vinpos) at (-3., -3.5) {};
+	\node [ocirc, label=left:$V_{in,pos}$] (Vinneg) at (-3., 3.5) {};
+	\node [circ, label=left:\raisebox{-0.9cm}{$V_{a,neg}$}] (VAneg) at (1.75, .75) {};
+	\node [circ, label=left:\raisebox{0.8cm}{$V_{b,neg}$}] (VBneg) at (1.75, -.75) {};
+	\node (VAneg2) at (4, -.75) {};
+	\node (VBneg2) at (4, .75) {};
+	\node [label=above:$V_a$] (VA) at (1.75, 3.) {};
+	\node [label=below:$V_b$] (VB) at (1.75, -3.) {};
+
+	\node (VLposint) at (4., 3.) {};
+	\node (VLnegint) at (4., -3.) {};
+	\node [] (von2) at (4.75, -0.75) {};
+	\node [label=above:$V_{L,pos}$] (vlpos) at (6.75, 3) {};
+	\node [label=below:$V_{L,neg}$] (vlneg) at (6.75, -3) {};
+
+	\draw (VB.center) to [R, l^=$R_{4b}$, *-*] (VLnegint.center) {};
+	\draw (VA.center) to [R, l^=$R_{2b}$, *-*] (VLposint.center) {};
+
+	\draw (Vinpos.center) to [o-] (opampa.+) {};
+	\draw (Vinneg.center) to [o-] (opampb.+) {};
+
+	\draw (opampb.-) |- (VAneg) {};
+	\draw (opampa.-) |- (VBneg) {};
+	\draw (opampa.out) -- (VB.center) {};
+	\draw (opampb.out) -- (VA.center) {};
+	\draw (VAneg.center) -- (VAneg2.center) to [R, label=$R_{4a}$] (VLnegint.center) {};
+	\draw (VLposint.center) to [R, label=$R_{2a}$] (VBneg2.center) -- (VBneg.center) {};
+	\draw (VBneg.center) to [R, l=$R_3$] (VB.center) {};
+	\draw (VA.center) to [R, l=$R_1$] (VAneg.center) {};
+
+	\draw (VLposint.center) -- (vlpos.center) to [generic, l=$Z_L$, i>^=$I_L$, o-o] (vlneg.center) -- (VLnegint.center) {};
+\end{circuitikz}

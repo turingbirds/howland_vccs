@@ -1,0 +1,60 @@
+* Single-ended Howland VCCS
+
+V1 Vindiff 0 AC 1.
+E1 Vinneg 0 Vindiff 0 -.5
+E2 Vinpos 0 Vindiff 0 .5
+
+R1 Vinneg Vneg 10250
+R2 Vneg Vo 10250
+CFB1 Vneg Vo {CFB}
+R4b Vo VL 250
+R3 Vinpos Vpos 10250
+R4a Vpos VL 10k
+
+RL VL 0 {RLOAD}
+CL VL 0 {CLOAD}
+
+V10 N001 0 15
+V11 N002 0 -15
+XU1 Vpos Vneg N001 N002 Vo OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+
+* CIRCUIT PARAMETERS
+.param RLOAD 10k
+.param CLOAD 0
+   * was: 100p
+.param CFB 0
+   * was: 6.6p
+
+* OP-AMP PARAMETERS
+.param RIN 100Meg
+.param CIN 10p
+.param ROUT 10
+.param AOL 1Meg
+.param GBW 10Meg
+.param FP1 {GBW / SQRT((AOL / 1.413)**2 - 1)}
+.param FP2 {GBW}
+.param FP3 {100*GBW}
+
+* SIMULATION REQUEST
+.ac oct 20 1 10Meg
+;.tran 0 .125e-3 0
+
+* SIMULATION OPTIONS
+.OPTIONS numdgt=15
+.OPTIONS measdgt=15
+*.OPTIONS Gmin=1e-18
+*.OPTIONS Abstol=1e-18
+*.OPTIONS Reltol=1e-18
+*.OPTIONS vntol=1e-18
+*.options plotwinsize=0
+*.options itl1=1000
+*.options itl4=1000
+* .OPTIONS method=gear
+* .options maxord=1
+
+.lib "c:\sim\op_amp_model.net"
+.lib LTC.lib
+
+.save V(VL) I(RL) I(CL)
+
+.end

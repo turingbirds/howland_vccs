@@ -1,0 +1,77 @@
+* Loop gain simulation for single-ended Howland VCCS
+V1112 N011 0 15
+R2 N012 Vinneg2 10250
+R5 N015 N014 10k
+R6 N014 Vinpos2 10250
+R7 VIM N015 250
+R8 VIM N013 250
+R9 N013 N012 10k
+V2213 N017 0 -15
+RL1 N015 0 {RLOAD}
+C7 VIM N012 {CFB}
+VE55 Vindiff2 0 0.25
+E3 Vinneg2 0 Vindiff2 0 -.5
+E4 Vinpos2 0 Vindiff2 0 .5
+C1 N015 0 {CLOAD}
+V2 VIM VFM AC 1
+V4441 N001 0 15
+R1 N005 Vinneg 10250
+R3 N008 N007 10k
+R4 N007 Vinpos 10250
+R11 N004 N008 250
+R12 N004 N006 250
+C2 N004 N005 {CFB}
+R13 N006 N005 10k
+V6179 N010 0 -15
+RL2 N008 0 {RLOAD}
+C3 N008 0 {CLOAD}
+V176 Vindiff 0 0.25
+E1 Vinneg 0 Vindiff 0 -.5
+E2 Vinpos 0 Vindiff 0 .5
+
+XU1 N014 N012 N011 N017 VFM OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+XU2 N007 N005 N001 N010 N002 OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+
+* probe elements for determining loop gain
+I1 0 N003 AC 1
+VIF N003 N002 0
+VII N003 N004 0
+
+* CIRCUIT PARAMETERS
+.param RLOAD NaN
+.param CLOAD NaN
+.param CFB NaN
+
+* OP-AMP PARAMETERS
+.param RIN 100Meg
+.param CIN 10p
+.param ROUT 10
+.param AOL 1Meg
+.param GBW 10Meg
+.param FP1 {GBW / SQRT((AOL / 1.413)**2 - 1)}
+.param FP2 {GBW}
+.param FP3 {100*GBW}
+
+* SIMULATION REQUEST
+.ac oct 40 1 100Meg
+;.op
+;tran 0 10e-6 0 1e-9
+;noise V(outp)-V(outn) V2 oct 100 100 10E6
+
+* SIMULATION OPTIONS
+.OPTIONS numdgt=15
+.OPTIONS measdgt=15
+*.OPTIONS Gmin=1e-18
+*.OPTIONS Abstol=1e-18
+*.OPTIONS Reltol=1e-18
+*.OPTIONS vntol=1e-18
+*.options plotwinsize=0
+*.options itl1=1000
+*.options itl4=1000
+* .OPTIONS method=gear
+* .options maxord=1
+
+.lib "c:\sim\op_amp_model.net"
+.lib LTC.lib
+
+.end

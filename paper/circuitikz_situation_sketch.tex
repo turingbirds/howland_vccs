@@ -1,0 +1,37 @@
+\begin{circuitikz}
+	\node [] (topleft) at (-1, 1) {};
+	\node [] (bottomleft) at (-1, -1) {};
+
+	\node [] (topright) at (2, 1) {};
+	\node [] (bottomright) at (2, -1) {};
+
+	\node [] (topright1) at (4, 1) {};
+	\node [] (bottomright1) at (4, -1) {};
+
+	\node [] (topright2) at (5, 1) {};
+	\node [] (bottomright2) at (5, -1) {};
+
+	\draw (topleft.center) to [generic, l=$Z_L$]  (bottomleft.center) {};
+	\draw (bottomright1.center) to [generic, l=$Z_{out}$, *-*]  (topright1.center) {};
+	\draw (bottomright2.center) to [american controlled current source, l_=$g_m$]  (topright2.center) {};
+	\draw (topleft.center) to [generic, l=$Z_{elec}$, i<^=$I_L$]  (topright.center) {};
+	\draw (bottomleft.center) to [generic, l=$Z_{elec}$]  (bottomright.center) {};
+	\draw (topright.center) to [short] (topright1.center) {};
+	\draw (bottomright.center) to [short] (bottomright1.center) {};
+	\draw (topright1.center) to [short] (topright2.center) {};
+	\draw (bottomright1.center) to [short] (bottomright2.center) {};
+
+	%
+	% 	RC poles: box
+	%
+
+	\node [] (vboxtr) at (2.75, 1.4) {};
+	\node [] (vboxbr) at (2.75, -1.4) {};
+	\node [] (vboxtl) at (6.25, 1.4) {};
+	\node [] (vboxbl) at (6.25, -1.4) {};
+
+	\draw[dashed] (vboxtr.center) to [short] (vboxbr.center) {};
+	\draw[dashed] (vboxbr.center) to [short] (vboxbl.center) {};
+	\draw[dashed] (vboxbl.center) to [short] (vboxtl.center) {};
+	\draw[dashed] (vboxtl.center) to [short] (vboxtr.center) {};
+\end{circuitikz}

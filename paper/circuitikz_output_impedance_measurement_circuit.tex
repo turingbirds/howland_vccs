@@ -1,0 +1,50 @@
+\begin{circuitikz}
+	\node [op amp] (opamp) at (7.5, 1.49) {} ;
+	\node [spdt, rotate=270, yscale=-1] (spdt) at (5.3, .4) {} ;
+
+    \node [] (VLpos) at (4, -2.2) {};
+% 	\node [label=right:$V_{L,pos}$] (VLneg) at (8, 2) {};
+	\node [] (VLneg) at (8, 2) {};
+	\node [] (VLnegmeas) at (12, 2) {};
+	\node [] (op_vin_p) at (2, -2.2) {};
+	\node [] (op_vin_n) at (2, 2) {};
+	\node [] (op_vin_p2) at (1, -2.2) {};
+	\node [] (op_vin_n2) at (1, 2) {};
+
+	\node [] (vboxtr) at (-2., 1.4) {};
+	\node [] (vboxbr) at (-2., -2.6) {};
+	\node [] (vboxtl) at (1.5, 1.4) {};
+	\node [] (vboxbl) at (1.5, -2.6) {};
+
+	\draw[dashed] (vboxtr.center) to [short] (vboxbr.center) {};
+	\draw[dashed] (vboxbr.center) to [short] (vboxbl.center) {};
+	\draw[dashed] (vboxbl.center) to [short] (vboxtl.center) {};
+	\draw[dashed] (vboxtl.center) to [short] (vboxtr.center) {};
+
+	\draw (-.75, -2.2) to [american controlled current source, l=$g_m$] (-.75, 1) {}; % , i^>=$I$
+	\draw (0.25, 1) to [generic, l=$Z_{out}$, *-*] (0.25, -2.2) {};
+	\draw (2, 1) to [R, l=$R_{sens}$, i>^=$I_L$, -*] (5.3, 1) {};
+	\draw (2, -2.2) to [short] (5.3, -2.2) {};
+% 	\draw (2, -2.2) to [R, l=$R_{sens}'$, color=lightgray!50] (5.3, -2.2) {};
+	\draw (spdt.out 1)+(0, .2) to [R, a=$R_{L,a}$, -*] +(0, -2) {};
+	\draw (spdt.out 2)+(0, .2) to [R, l=$R_{L,b}$] +(0, -2) {};
+
+	\draw (opamp.+) to +(-1, 0) {};
+	\draw (opamp.-) -| +(-4.3, 0) to +(-4.3, 0) to [short, -*] (2, 1) {};
+
+	% IA resistor
+	\draw (opamp.-)+(0, -.1) to [R, resistors/scale=.5] +(0, -.85) {};
+	\draw (opamp.-)+(0, -.1) to +(.35, -.1) {};
+	\draw (opamp.-)+(0, -.85) to +(.35, -.85) {};
+
+	% voltmeter
+    \draw (opamp.out) -- +(0, 0) to +(0,-.25) to [rmeter, t=\large V] +(0, -1.25) node[rground] {};
+
+ 	\draw (5.621, -2.2) to [short] (5, -2.2) {};
+	\draw (-.757, -2.2) to [short] (2, -2.2) {};
+	\draw (-.757, 1) to [short] (2, 1) {};
+
+% 	\draw (op_vin_n) to [short] (op_vin_n2) {};
+% 	\draw (VLneg) to [short] (op_vin_n2) {};
+% 	\draw (op_vin_p) to [short] (op_vin_p2) {};
+\end{circuitikz}

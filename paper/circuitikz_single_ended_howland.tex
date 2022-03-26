@@ -1,0 +1,26 @@
+\begin{circuitikz}
+
+	\node [op amp] (opamp) {} (0,0);
+
+	\node [label=left:$V_{in,pos}$] (Vinpos) at (-6, -2) {};
+	\node [label=left:$V_{in,neg}$] (Vinneg) at (-6, 2) {};
+	\node [label=below:$V_{pos}$] (op_vp) at (-2, -2) {};
+	\node [label=above:$V_{neg}$] (op_vn) at (-2, 2) {};
+	\node [label=right:$V_L$] (vb) at (2, -2) {};
+	\node [label=right:$V_o$] (va) at (2, 0) {};
+	\node [] (vdummy) at (2, -2.5) {};
+
+	\draw (vb.center)+(0, -0.2) to [generic, l=$Z_L$, i>^=$I_L$] +(0, -2.2) node [rground] at +(0, -2) {};
+	\draw (opamp.out) -- (va.center) {};
+
+	\draw (Vinneg.center) to [R, l=$R_1$, o-*] (op_vn.center) {};
+	\draw (Vinpos.center) to [R, l=$R_3$, o-*] (op_vp.center) {};
+	\draw (op_vp.center) to [R, l=$R_{4a}$] (vb.center) {};
+	\draw (va.center) |- (2, 2) to [R, l_=$R_2$] (op_vn.center) {};
+	\draw (vb.center) -- (vdummy.center) {};
+
+	\draw (opamp.+) -| (-2, -2) to (op_vp.center) {};
+	\draw (opamp.-) -| (-2, 2) to (op_vn.center) {};
+
+	\draw (va) to [R, l^=$R_{4b}$, *-o] (vb) {};
+\end{circuitikz}

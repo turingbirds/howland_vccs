@@ -1,0 +1,64 @@
+\begin{circuitikz}
+	\node [label=left:$V_{in,pos}$] (Vinpos) at (-7, -1) {};
+	\node [label=left:$V_{in,neg}$] (Vinneg) at (-7, 1) {};
+	\node [] (op_vin_p) at (-5.5, -1) {};
+	\node [] (op_vin_n) at (-5.5, 1) {};
+	\node [] (op_vin_p2) at (-4, -1) {};
+	\node [] (op_vin_n2) at (-4, 1) {};
+
+	\draw (Vinneg.center) to [short, o-*] (op_vin_n.center) {};
+	\draw (Vinpos.center) to [short, o-*] (op_vin_p.center) {};
+	\draw (op_vin_p.center) to [R, l=$R_{in}$] (op_vin_n.center) {};
+
+	\draw (op_vin_n.center) to [short] (op_vin_n2.center) {};
+	\draw (op_vin_p.center) to [short] (op_vin_p2.center) {};
+	\draw (op_vin_p2.center) to [C, l=$C_{in}$] (op_vin_n2.center) {};
+
+
+	%
+	% 	RC poles: box
+	%
+
+	\node [] (vboxtr) at (3, 2) {};
+	\node [] (vboxbr) at (3, -2) {};
+	\node [] (vboxtl) at (-3, 2) {};
+	\node [] (vboxbl) at (-3, -2) {};
+
+	\draw[dashed] (vboxtr.center) to [short] (vboxbr.center) {};
+	\draw[dashed] (vboxbr.center) to [short] (vboxbl.center) {};
+	\draw[dashed] (vboxbl.center) to [short] (vboxtl.center) {};
+	\draw[dashed] (vboxtl.center) to [short] (vboxtr.center) {};
+
+
+
+	%
+	% 	RC poles
+	%
+
+	\node [] (gainshaping_gt) at (-1.5, 1) {};
+	\node [] (gainshaping_gb) at (-1.5, -1) {};
+	\node [label=above:$V_{n}$] (gainshaping_rt) at (0, 1) {};
+	\node [] (gainshaping_rb) at (0, -1) {};
+	\node [] (gainshaping_ct) at (1.5, 1) {};
+	\node [] (gainshaping_cb) at (1.5, -1) {};
+	\draw (gainshaping_gb.center) to [american controlled current source, l=$g_{n}$] (gainshaping_gt.center) {};
+	\draw (gainshaping_gb.center) to [short, *-] ++(0, -.2) node [rground] {};
+	\draw (gainshaping_rt.center) to [R, l=$R_{n}$, *-*] (gainshaping_rb.center) {};
+	\draw (gainshaping_ct.center) to [C, l=$C_{n}$] (gainshaping_cb.center) {};
+	\draw (gainshaping_gt.center) to [short] (gainshaping_rt.center) {};
+	\draw (gainshaping_rt.center) to [short] (gainshaping_ct.center) {};
+	\draw (gainshaping_gb.center) to [short] (gainshaping_rb.center) {};
+	\draw (gainshaping_rb.center) to [short] (gainshaping_cb.center) {};
+
+
+	%
+	% 	the output VCVS and output resistance
+	%
+
+	\node [] (v1t) at (4, 1) {};
+	\node [] (v1b) at (4, -1) {};
+	\node [label=right:$V_{out}$] (f1bp) at (7, 1) {};
+	\draw (v1t.center) to [american controlled voltage source, l=$E_{out}$] (v1b.center) {};
+	\draw (v1t.center) to [R, l=$R_{out}$, -o] (f1bp.center) {};
+	\draw (v1b.center) to [short] ++(0, -.2) node [rground] {};
+\end{circuitikz}

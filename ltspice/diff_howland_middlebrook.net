@@ -1,0 +1,95 @@
+* Loop gain simulation for fully differential Howland VCCS
+R3 outp N001 10k
+R5 N003 outp 250
+C7 N002 N003 {CFB}
+RL outp outn {RLOAD}
+R9 N003 N002 10250
+R36 outn N002 10k
+R38 outn N011 250
+C10 N011 N001 {CFB}
+R40 N011 N001 10250
+V3 P001 0 15
+V7 N005 0 -15
+V8 P002 0 15
+V9 N012 0 -15
+V2 Vindiff 0 0.25
+E3 Vinpos 0 Vindiff 0 .5
+E4 Vinneg 0 Vindiff 0 -.5
+XU3 N006 N010 N004 N009 balun
+XU4 N008 N010 N003 N011 balun
+VIF N007 N006 0
+VII N007 N008 0
+I1 0 N007 AC 1.
+R1 outp2 N013 10k
+R2 N015 outp2 250
+C1 N014 N015 {CFB}
+RL1 outp2 outn2 {RLOAD}
+R4 N015 N014 10250
+R6 outn2 N014 10k
+R7 outn2 N020 250
+C2 N020 N013 {CFB}
+R8 N020 N013 10250
+V1 P003 0 15
+V4 N017 0 -15
+V5 P004 0 15
+V6 N021 0 -15
+V10 Vindiff2 0 0.25
+E1 Vinpos2 0 Vindiff2 0 .5
+E2 Vinneg2 0 Vindiff2 0 -.5
+XU7 VFM N019 N016 N018 balun
+XU8 VIM N019 N015 N020 balun
+V11 VIM VFM AC 1
+C3 outp2a outn2a {CLOAD}
+R112 outp2 outp2a {ROUTSERIES}
+R1122 outn2 outn2a {ROUTSERIES}
+C4 outpa outna {CLOAD}
+R111 outp outpa {ROUTSERIES}
+R1111 outn outna {ROUTSERIES}
+
+* OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+XU1 Vinpos2 N014 P003 N017 N016 OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+XU2 Vinneg2 N013 P004 N021 N018 OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+XU5 Vinpos N002 P001 N005 N004 OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+XU6 Vinneg N001 P002 N012 N009 OPAMPMOD AV={AOL} RO={ROUT} RIN={RIN} CIN={CIN} FP1={FP1} FP2={FP2} FP3={FP3}
+
+* CIRCUIT PARAMETERS
+.param RLOAD NaN
+.param CLOAD NaN
+.param ROUTSERIES 1E-6
+.param CFB NaN
+
+* OP-AMP PARAMETERS
+.param RIN 100Meg
+.param CIN 10p
+.param ROUT 1
+.param AOL 1Meg
+.param GBW 10Meg
+.param FP1 {GBW / SQRT((AOL / 1.413)**2 - 1)}
+.param FP2 {GBW}
+.param FP3 {100*GBW}
+
+* SIMULATION REQUEST
+.ac oct 40 1 100Meg
+;.op
+;tran 0 10e-6 0 1e-9
+;noise V(outp)-V(outn) V2 oct 100 100 10E6
+
+* SIMULATION OPTIONS
+.OPTIONS numdgt=15
+.OPTIONS measdgt=15
+*.OPTIONS Gmin=1e-18
+*.OPTIONS Abstol=1e-18
+*.OPTIONS Reltol=1e-18
+*.OPTIONS vntol=1e-18
+*.options plotwinsize=0
+*.options itl1=1000
+*.options itl4=1000
+* .OPTIONS method=gear
+* .options maxord=1
+
+.lib "c:\sim\op_amp_model.net"
+.lib "c:\sim\balun.net"
+.lib LTC.lib
+
+.end
+	
